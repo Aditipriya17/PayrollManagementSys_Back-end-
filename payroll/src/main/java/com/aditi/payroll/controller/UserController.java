@@ -18,6 +18,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> saveUser(@RequestBody User user) {
+        user.setId(System.currentTimeMillis());
         return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
     }
 }
