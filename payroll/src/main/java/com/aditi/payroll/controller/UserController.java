@@ -25,6 +25,15 @@ public class UserController {
         user.setPassword(sha256(user.getPassword()));
         return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
     }
+    @PostMapping("/validate")
+    public ResponseEntity<String> validateUser(@RequestBody User user) throws NoSuchAlgorithmException {
+        User data = userService.getUserByEmail(user.getEmail());
+        if (sha256(user.getPassword()).equals(data.getPassword())) {
+            return new ResponseEntity<>("matched", HttpStatus.FOUND);
+        } else {
+            return new ResponseEntity<>("not matched", HttpStatus.NOT_FOUND);
+        }
+    }
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUser() {
